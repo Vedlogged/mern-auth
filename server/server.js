@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
-import connectDB from './config/db.js';
 import authRoutes from './routes/auth.js';
 
 // Load environment variables from .env file
@@ -11,8 +10,8 @@ dotenv.config();
 // Initialize Express app
 const app = express();
 
-// Connect to MongoDB
-connectDB();
+// Note: Using in-memory storage instead of MongoDB for testing
+console.log('📦 Using in-memory storage (data will be lost on restart)');
 
 // ===================
 // MIDDLEWARE SETUP
@@ -80,12 +79,18 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`
+// Only start server if not running as serverless function (Vercel)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`
   =============================================
   🚀 Server running on port ${PORT}
   📝 Environment: ${process.env.NODE_ENV || 'development'}
   🔗 API URL: http://localhost:${PORT}/api
   =============================================
-  `);
-});
+    `);
+  });
+}
+
+// Export for Vercel serverless
+export default app;

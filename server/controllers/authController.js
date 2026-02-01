@@ -1,4 +1,4 @@
-import User from '../models/User.js';
+import User from '../models/UserMemory.js';
 import { generateToken, setTokenCookie, clearTokenCookie } from '../utils/jwt.js';
 
 /**
