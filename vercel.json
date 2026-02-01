@@ -1,8 +1,8 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "cd server && npm install && cd ../client && npm install",
-  "buildCommand": "cd client && npm run build",
+  "installCommand": "npm install --prefix server && npm install --prefix client",
+  "buildCommand": "cd client && npx --yes vite build",
   "outputDirectory": "client/dist",
   "functions": {
     "api/index.js": {
