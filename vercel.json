@@ -1,6 +1,7 @@
 {
   "version": 2,
-  "installCommand": "npm install --prefix server && cd client && npm install",
+  "framework": null,
+  "installCommand": "cd server && npm install && cd ../client && npm install",
   "buildCommand": "cd client && npm run build",
   "outputDirectory": "client/dist",
   "functions": {
