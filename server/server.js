@@ -18,9 +18,27 @@ console.log('📦 Using in-memory storage (data will be lost on restart)');
 // ===================
 
 // CORS configuration - allows frontend to make requests to backend
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  process.env.CLIENT_URL,
+  process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173', // Frontend URL
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.some(allowed => origin.includes(allowed.replace('https://', '').replace('http://', '')))) {
+        return callback(null, true);
+      }
+      // In production on Vercel, allow same-origin requests
+      if (process.env.VERCEL === '1') {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true, // Allow cookies to be sent with requests
   })
 );

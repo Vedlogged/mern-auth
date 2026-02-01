@@ -1,6 +1,14 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/UserMemory.js';
 
+// Get JWT secret with fallback
+const getJwtSecret = () => {
+  if (!process.env.JWT_SECRET) {
+    return 'fallback-secret-change-in-production';
+  }
+  return process.env.JWT_SECRET;
+};
+
 /**
  * Authentication Middleware
  * Protects routes by verifying JWT token
@@ -31,7 +39,7 @@ const protect = async (req, res, next) => {
     }
 
     // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, getJwtSecret());
 
     // Get user from token payload (excluding password)
     const user = await User.findById(decoded.id).select('-password');
