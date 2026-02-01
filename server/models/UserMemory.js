@@ -73,9 +73,11 @@ const User = {
    * Find user by email
    */
   findOne: (query) => {
-    return {
+    const searchEmail = query.email ? query.email.toLowerCase().trim() : null;
+    const user = users.find(u => u.email === searchEmail);
+    
+    const result = {
       select: (fields) => {
-        const user = users.find(u => u.email === query.email);
         if (!user) return Promise.resolve(null);
 
         // If +password is requested, include password
@@ -92,7 +94,15 @@ const User = {
         const { password, ...userWithoutPassword } = user;
         return Promise.resolve(userWithoutPassword);
       },
+      then: (resolve, reject) => {
+        // Allow findOne to be used without select()
+        if (!user) return resolve(null);
+        const { password, ...userWithoutPassword } = user;
+        return resolve(userWithoutPassword);
+      }
     };
+    
+    return result;
   },
 
   /**
