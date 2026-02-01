@@ -1,9 +1,9 @@
 {
   "version": 2,
   "framework": null,
-  "installCommand": "npm install --prefix server && npm install --prefix client",
-  "buildCommand": "cd client && npx --yes vite build",
+  "buildCommand": "npm run vercel-build",
   "outputDirectory": "client/dist",
+  "installCommand": "npm install --prefix server",
   "functions": {
     "api/index.js": {
       "memory": 1024,
