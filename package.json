@@ -6,8 +6,7 @@
   "scripts": {
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
-    "build": "npm install --prefix client && cd client && npx --yes vite build",
-    "vercel-build": "npm install --prefix client && cd client && npx --yes vite build",
+    "build": "cd client && npm install && npm run build",
     "install:all": "npm install --prefix server && npm install --prefix client"
   },
   "engines": {
